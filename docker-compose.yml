@@ -1,0 +1,25 @@
+mariadb:
+  image: mariadb:10.1 
+  environment:
+    MYSQL_USER: drupal 
+    MYSQL_PASSWORD: password 
+    MYSQL_ROOT_PASSWORD: password
+    MYSQL_DATABASE: drupal
+  expose:
+    - '3306'
+  volumes:
+    - ~/.docker-volumes/drupal/mariadb/data:/var/lib/mysql
+
+drupal:
+  image: drupal:7.41
+  environment:
+    DRUPAL_USER: drupal  
+    DRUPAL_PASS: password 
+    DRUPAL_DBURL: mysql://drupal:password@mysql:3306/drupal 
+  links:
+    - mariadb
+  ports:
+    - '8080:80'
+  volumes:
+    - ~/.docker-volumes/drupal/drupal/data:/var/www/html
+
